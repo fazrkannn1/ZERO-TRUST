@@ -1,0 +1,27 @@
+{
+  "name": "zero-trust-akademik",
+  "version": "1.0.0",
+  "description": "Sistem Nilai Kuliah dengan Arsitektur Zero Trust (NIST SP 800-207)",
+  "type": "module",
+  "scripts": {
+    "init-db": "node shared/initDb.js",
+    "seed": "node seed.js",
+    "test:policy": "node test-policy.js",
+    "test:nilai": "node test-service-nilai.js",
+    "test:transkrip": "node test-service-transkrip.js",
+    "test:e2e": "node test-e2e.js",
+    "test": "node test-policy.js && node test-service-nilai.js && node test-service-transkrip.js && node test-e2e.js",
+    "gateway": "node gateway/index.js",
+    "nilai": "node service-nilai/index.js",
+    "transkrip": "node service-transkrip/index.js",
+    "dev": "node shared/initDb.js && node gateway/index.js & node service-nilai/index.js & node service-transkrip/index.js"
+  },
+  "dependencies": {
+    "@libsql/client": "^0.18.0",
+    "bcrypt": "^6.0.0",
+    "better-sqlite3": "^13.0.3",
+    "express": "^4.22.3",
+    "http-proxy-middleware": "^4.2.1",
+    "jsonwebtoken": "^9.0.3"
+  }
+}

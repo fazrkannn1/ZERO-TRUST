@@ -1,0 +1,4 @@
+node_modules/
+shared/database.sqlite
+*.log
+.DS_Store
