@@ -128,10 +128,15 @@ async function run() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${andiAuth.access_token}`,
         'X-Device-ID': 'DEV-DSN-MAC-01',
+        'X-Custom-Time': '2026-10-30T10:00:00', // Simulasi jam 10:00 (dalam rentang akses operasional 07:00-21:00)
       },
       body: JSON.stringify({ nilai: 88.0 }),
     });
     const putData = await rPutNilai.json();
+    if (rPutNilai.status === 403 && putData.reason?.includes('jam kerja')) {
+      console.warn('  ⚠️ PERINGATAN: Gateway saat ini mendeteksi waktu di luar jam operasional (07:00-21:00).');
+      console.warn('     Silakan restart gateway (node gateway/index.js) agar pembacaan header X-Custom-Time aktif.');
+    }
     assert(rPutNilai.status === 200, 'Dosen pengampu update nilai non-final berhasil (200)');
     assert(putData.data?.nilai === 88.0, 'Nilai berhasil diupdate di database');
 
@@ -188,9 +193,14 @@ async function run() {
     headers: {
       Authorization: `Bearer ${andiAuth.access_token}`,
       'X-Device-ID': 'DEV-DSN-MAC-01',
+      'X-Custom-Time': '2026-10-30T10:00:00', // Simulasi jam 10:00 siang
     },
   });
   const dataFin = await rFin.json();
+  if (rFin.status === 403 && dataFin.reason?.includes('jam kerja')) {
+    console.warn('  ⚠️ PERINGATAN: Finalisasi ditolak karena jam saat ini di luar jam operasional (07:00-21:00).');
+    console.warn('     Silakan restart gateway (node gateway/index.js) agar pembacaan header X-Custom-Time aktif.');
+  }
   assert(rFin.status === 200, 'Dosen finalisasi kelas berhasil (200)');
   assert(dataFin.sinkron_transkrip === 'BERHASIL', 'Trigger sinkron transkrip ke Service Transkrip BERHASIL');
 

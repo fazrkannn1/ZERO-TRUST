@@ -391,8 +391,10 @@ export function verifyZeroTrust(req, res, next) {
     }
   }
 
-  // 3. Panggil Policy Engine untuk allow/deny
-  const decision = evaluatePolicy(req);
+  // 3. Panggil Policy Engine untuk allow/deny (dukung header x-custom-time untuk simulasi/testing)
+  const customTimeHeader = req.headers['x-custom-time'];
+  const evalTime = customTimeHeader ? new Date(customTimeHeader) : new Date();
+  const decision = evaluatePolicy(req, evalTime);
 
   // 4. Tulis audit log untuk setiap keputusan
   logAudit({

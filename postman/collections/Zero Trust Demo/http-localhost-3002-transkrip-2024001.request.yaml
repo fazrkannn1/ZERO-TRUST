@@ -1,0 +1,12 @@
+$kind: http-request
+name: http://localhost:3002/transkrip/2024001
+description: ""
+url: http://localhost:3002/transkrip/2024001
+method: GET
+headers:
+  X-Device-ID: DEV-ADMIN-WIN-01
+auth:
+  type: bearer
+  credentials:
+    token: "{{json_web_token_0qop}}"
+order: 1000
